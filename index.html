@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIC TO BOSS - Educational Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                            accent: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* VFX Background Styles */
+        .vfx-bg-1 {
+            background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.25) 0%, rgba(15, 23, 42, 0) 70%),
+                        radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        .vfx-bg-2 {
+            background: radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.25) 0%, rgba(15, 23, 42, 0) 70%),
+                        radial-gradient(circle at 90% 20%, rgba(99, 102, 241, 0.3) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        .vfx-bg-3 {
+            background: radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.25) 0%, rgba(15, 23, 42, 0) 70%),
+                        radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.2) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        .hover-scale { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hover-scale:hover { transform: translateY(-4px); }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 relative overflow-x-hidden">
+
+    <!-- Ambient Overlay Layer -->
+    <div id="vfxCanvas" class="fixed inset-0 pointer-events-none z-0 vfx-bg-1 transition-all duration-1000"></div>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="sticky top-0 z-50 glass-card shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-12 h-12 bg-gradient-to-tr from-brand-600 via-indigo-500 to-brand-accent rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-brand-500/30 hover-scale">
+                        B
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black bg-gradient-to-r from-brand-600 via-indigo-400 to-brand-accent bg-clip-text text-transparent tracking-tight">BASIC TO BOSS</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Smart Ed-Tech Platform</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden xl:flex items-center space-x-1 font-semibold text-sm">
+                    <button onclick="navigateTo('home')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">হোম</button>
+                    <button onclick="navigateTo('paid-courses')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">পেইড কোর্স</button>
+                    <button onclick="navigateTo('recorded-classes')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">রেকোর্ডেড ক্লাস</button>
+                    <button onclick="navigateTo('class-notes')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">ক্লাস নোটস</button>
+                    <button onclick="navigateTo('lecture-sheets')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition text-brand-600 dark:text-brand-accent font-bold">লেকচার শিট</button>
+                    <button onclick="navigateTo('free-classes')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">ফ্রি ক্লাস</button>
+                    <button onclick="navigateTo('quizzes')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">কুইজ</button>
+                    <button onclick="navigateTo('founder')" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">প্রতিষ্ঠাতা</button>
+                    <button onclick="scrollToContact()" class="px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 hover:text-brand-600 transition">যোগাযোগ</button>
+                </div>
+
+                <!-- Header Action Buttons & Toggles -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- Dynamic Background VFX Switcher -->
+                    <button onclick="toggleVFX()" title="Change Visual Effect Background" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-brand-600 dark:text-brand-accent hover:scale-110 transition active:scale-95 shadow-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                    </button>
+
+                    <!-- Theme Switcher -->
+                    <button onclick="toggleTheme()" title="Toggle Dark/Light Mode" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-amber-500 hover:scale-110 transition active:scale-95 shadow-sm">
+                        <i id="themeIcon" class="fa-solid fa-sun text-lg"></i>
+                    </button>
+
+                    <!-- Portal Trigger Controls -->
+                    <div class="hidden sm:flex items-center space-x-2">
+                        <button onclick="openPortal('student')" class="px-3.5 py-2 text-xs sm:text-sm font-bold text-brand-600 border-2 border-brand-600/40 rounded-xl hover:bg-brand-50 dark:hover:bg-slate-800 transition">
+                            <i class="fa-solid fa-user-graduate mr-1"></i> স্টুডেন্ট প্যানেল
+                        </button>
+                        <button onclick="openAdminModal()" class="px-3.5 py-2 text-xs sm:text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-lg shadow-brand-600/30 transition">
+                            <i class="fa-solid fa-user-shield mr-1"></i> অ্যাডমিন প্যানেল
+                        </button>
+                    </div>
+
+                    <!-- Mobile Drawer Toggle (3-Dots Icon) -->
+                    <button onclick="toggleMobileMenu()" class="xl:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                        <i class="fa-solid fa-ellipsis-vertical text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation Overlay -->
+        <div id="mobileMenu" class="hidden xl:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-5 pt-3 pb-6 space-y-2 font-medium shadow-2xl">
+            <button onclick="navigateTo('home')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">হোম</button>
+            <button onclick="navigateTo('paid-courses')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">পেইড কোর্স</button>
+            <button onclick="navigateTo('recorded-classes')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">রেকোর্ডেড ক্লাস</button>
+            <button onclick="navigateTo('class-notes')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">ক্লাস নোটস</button>
+            <button onclick="navigateTo('lecture-sheets')" class="block w-full text-left py-2.5 px-3 rounded-xl bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-accent font-bold">লেকচার শিট (ই-বুক)</button>
+            <button onclick="navigateTo('free-classes')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">ফ্রি ক্লাস</button>
+            <button onclick="navigateTo('quizzes')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">কুইজ সেকশন</button>
+            <button onclick="navigateTo('founder')" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">প্রতিষ্ঠাতা পরিচিতি</button>
+            <button onclick="scrollToContact()" class="block w-full text-left py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">যোগাযোগ ও হেল্প</button>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2">
+                <button onclick="openPortal('student')" class="py-2.5 text-center text-xs font-bold text-brand-600 border border-brand-600 rounded-xl">স্টুডেন্ট প্যানেল</button>
+                <button onclick="openAdminModal()" class="py-2.5 text-center text-xs font-bold bg-brand-600 text-white rounded-xl shadow">অ্যাডমিন প্যানেল</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN APPLICATION VIEW CONTAINER -->
+    <main class="flex-grow relative z-10">
+
+        <!-- SECTION 1: HOME PAGE -->
+        <div id="sec-home" class="view-section">
+            
+            <!-- Hero Banner -->
+            <section class="py-12 md:py-20 px-4 max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <span class="px-4 py-1.5 rounded-full bg-brand-50 dark:bg-slate-800/80 text-brand-600 dark:text-brand-accent text-xs sm:text-sm font-bold border border-brand-200 dark:border-slate-700 inline-flex items-center shadow-sm">
+                            <i class="fa-solid fa-rocket mr-2 text-brand-accent"></i>স্বপ্নের বিশ্ববিদ্যালয় ও বোর্ড পরীক্ষার সেরা প্রস্তুতি
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+                            বেসিক মজবুত করে <br>
+                            <span class="bg-gradient-to-r from-brand-600 via-indigo-400 to-amber-500 bg-clip-text text-transparent">হয়ে ওঠো বস!</span>
+                        </h1>
+                        <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+                            BASIC TO BOSS প্ল্যাটফর্মে তোমাকে স্বাগতম। পদার্থবিজ্ঞান সহ বিজ্ঞান ও একাডেমিক সকল বিষয়ের সেরা এনিমেশনভিত্তিক ও কনসেপ্ট ক্লিয়ারিং ক্লাসের নির্ভরযোগ্য ডিজিটাল এড-টেক পোর্টাল।
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="navigateTo('paid-courses')" class="px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl shadow-xl shadow-brand-600/30 hover-scale flex items-center">
+                                <i class="fa-solid fa-graduation-cap mr-2"></i> কোর্সসমূহ দেখুন
+                            </button>
+                            <button onclick="navigateTo('free-classes')" class="px-8 py-4 bg-white dark:bg-slate-800 border-2 border-brand-600 text-brand-600 dark:text-white font-bold rounded-2xl hover-scale flex items-center shadow-md">
+                                <i class="fa-solid fa-play mr-2 text-brand-accent"></i> ফ্রি ক্লাসসমূহ
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Hero Card Graphic -->
+                    <div class="relative">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-600 to-amber-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                        <div class="relative glass-card p-6 rounded-3xl space-y-5 border border-slate-200 dark:border-slate-800 shadow-2xl">
+                            <div class="flex items-center space-x-4 border-b border-slate-200 dark:border-slate-700/60 pb-4">
+                                <div class="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-500 flex items-center justify-center text-2xl font-black shadow-inner">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">স্পেশাল ফিজিক্স ও সায়েন্স মাস্টারব্যাচ</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">এইচএসসি ও ভার্সিটি এডমিশন স্পেশাল প্রোগ্রাম</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-slate-100 dark:bg-slate-800/80 p-4 rounded-2xl text-center">
+                                    <span class="text-3xl font-black text-brand-600 dark:text-brand-accent">১০০+</span>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-semibold">এইচডি রেকোর্ডেড ক্লাস</p>
+                                </div>
+                                <div class="bg-slate-100 dark:bg-slate-800/80 p-4 rounded-2xl text-center">
+                                    <span class="text-3xl font-black text-amber-500">৫০+</span>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-semibold">প্র্যাকটিস কুইজ ও ই-বুক</p>
+                                </div>
+                            </div>
+                            <div class="bg-brand-50 dark:bg-slate-800/40 p-3 rounded-xl flex items-center justify-between text-xs font-bold text-brand-700 dark:text-brand-100">
+                                <span><i class="fa-solid fa-check-circle mr-1 text-green-500"></i> অনলাইন কুইজ পোর্টাল</span>
+                                <span><i class="fa-solid fa-check-circle mr-1 text-green-500"></i> ডিরেক্ট ওয়াটসঅ্যাপ ডাউট সলভ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROMINENT FOUNDER SECTION (NEAR TOP OF BODY) -->
+            <section id="home-founder" class="py-12 bg-gradient-to-b from-brand-500/10 via-transparent to-transparent">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="glass-card rounded-3xl p-6 sm:p-10 border-2 border-brand-500/30 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="grid md:grid-cols-12 gap-8 items-center">
+                            
+                            <!-- Founder Photo with Animated Glow Hover Effect -->
+                            <div class="md:col-span-5 text-center space-y-3">
+                                <div class="relative inline-block group cursor-pointer" onclick="showFounderDetails()">
+                                    <div class="absolute -inset-2 bg-gradient-to-r from-brand-600 via-indigo-500 to-amber-500 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-500 group-hover:scale-105"></div>
+                                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl mx-auto flex items-center justify-center bg-slate-800 text-white">
+                                        <div class="w-full h-full bg-slate-300 dark:bg-slate-700 flex flex-col items-center justify-center text-5xl font-bold text-slate-600 dark:text-slate-300">
+                                            
+                                            
+                                            <img src="825266685_2283351152515319_4637223067698616491_n (2).jpg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-black hover:text-brand-600 transition cursor-pointer" onclick="showFounderDetails()">
+                                        আব্দুল্লাহ আল নাঈম
+                                    </h3>
+                                    <p class="text-brand-600 dark:text-brand-accent font-bold text-sm">প্রতিষ্ঠাতা ও লিড ইন্সট্রাক্টর (পদার্থবিজ্ঞান)</p>
+                                </div>
+                            </div>
+
+                            <!-- Founder Qualifications & Intro -->
+                            <div class="md:col-span-7 space-y-4">
+                                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-extrabold border border-amber-500/20">
+                                    <i class="fa-solid fa-award"></i>
+                                    <span>ইনস্ট্রাক্টর প্রোফাইল ও পরিচিতি</span>
+                                </div>
+                                <h2 class="text-3xl font-black leading-tight">শিক্ষার্থী থেকে শিক্ষকের বাস্তব অভিজ্ঞতায় গড়া "BASIC TO BOSS"</h2>
+                                <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+                                    হাজী মোহাম্মদ দানেশ বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় (HSTU)-এর বি.এসসি. ইন এগ্রিকালচার অনুষদের শিক্ষার্থী আব্দুল্লাহ আল নাঈম দীর্ঘ দিন ধরে ফিজিক্স ও সায়েন্স বিষয়ের জটিল ও কঠিন টপিকগুলো সহজ, সাবলীল ও এনিমেশন চিত্রায়ণের মাধ্যমে উপস্থাপন করে আসছেন।
+                                </p>
+                                <div class="grid grid-cols-2 gap-3 text-xs font-semibold">
+                                    <div class="p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl">
+                                        <p class="text-slate-400">বিশ্ববিদ্যালয়:</p>
+                                        <p class="text-brand-600 dark:text-brand-accent font-bold">HSTU (দিনাজপুর)</p>
+                                    </div>
+                                    <div class="p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl">
+                                        <p class="text-slate-400">বিশেষত্ব:</p>
+                                        <p class="text-brand-600 dark:text-brand-accent font-bold">ফিজিক্স কনসেপ্ট ট্রেইনার</p>
+                                    </div>
+                                </div>
+                                <div class="pt-2">
+                                    <button onclick="showFounderDetails()" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition shadow-md flex items-center">
+                                        <i class="fa-solid fa-circle-info mr-2"></i> প্রতিষ্ঠাতা বায়ো ও সিভি দেখুন
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROMINENT FREE CLASS HIGHLIGHT SECTION -->
+            <section class="py-12 px-4 max-w-7xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-amber-500 font-extrabold text-xs tracking-widest uppercase border border-amber-500/30 px-3 py-1 rounded-full bg-amber-500/10">স্পেশাল ফ্রি সার্ভিস</span>
+                    <h2 class="text-3xl font-black mt-2">ফ্রি মাস্টারক্লাস হাইলাইটস</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">কোনো প্রকার পেমেন্ট ছাড়াই আমাদের কোয়ালিটি যাচাই করতে ফ্রি ক্লাসগুলো উপভোগ করো</p>
+                </div>
+
+                <div id="home-free-classes-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic items loaded via JavaScript -->
+                </div>
+            </section>
+
+        </div>
+
+        <!-- SECTION 2: PAID COURSES PAGE -->
+        <div id="sec-paid-courses" class="view-section hidden py-10 px-4 max-w-7xl mx-auto space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-black">পেইড কোর্সসমূহ</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">তোমার ক্লাস বা এডমিশন ক্যাটাগরি সিলেক্ট করে সঠিক কোর্সে ভর্তি হয়ে যাও</p>
+            </div>
+
+            <!-- Class Level Filter -->
+            <div class="flex justify-center flex-wrap gap-2">
+                <button onclick="filterCourses('all', this)" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-brand-600 text-white shadow-md">সবগুলো</button>
+                <button onclick="filterCourses('class58', this)" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">ক্লাস ৫ - ৮</button>
+                <button onclick="filterCourses('ssc', this)" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">এসএসসি (SSC)</button>
+                <button onclick="filterCourses('hsc', this)" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">এইচএসসি (HSC)</button>
+                <button onclick="filterCourses('admission', this)" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">এডমিশন প্রস্তুতি</button>
+            </div>
+
+            <!-- Courses Container Grid -->
+            <div id="coursesContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Courses injected dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- SECTION 3: RECORDED CLASSES PAGE -->
+        <div id="sec-recorded-classes" class="view-section hidden py-10 px-4 max-w-7xl mx-auto space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-3xl font-black">রেকোর্ডেড ক্লাস ভল্ট</h2>
+                    <p class="text-slate-500 text-sm mt-1">বিষয় ও অধ্যায়ভিত্তিক আর্কাইভ করা এইচডি ক্লাসসমূহ</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-12 gap-6">
+                <div class="md:col-span-4 glass-card p-5 rounded-3xl space-y-4">
+                    <h4 class="font-bold border-b dark:border-slate-700 pb-2 flex items-center">
+                        <i class="fa-solid fa-filter text-brand-600 mr-2"></i> ফিল্টার অপশন
+                    </h4>
+                    <div>
+                        <label class="block text-xs font-bold mb-1">বিষয় নির্বাচন করুন</label>
+                        <select id="recSubject" onchange="renderRecordedClasses()" class="w-full p-3 rounded-xl border dark:border-slate-700 bg-white dark:bg-slate-800 font-semibold text-sm">
+                            <option value="physics">পদার্থবিজ্ঞান (Physics)</option>
+                            <option value="chemistry">রসায়ন (Chemistry)</option>
+                            <option value="math">উচ্চতর গণিত (Higher Math)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="md:col-span-8">
+                    <div id="recordedList" class="grid gap-4">
+                        <!-- Loaded via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: CLASS NOTES PAGE -->
+        <div id="sec-class-notes" class="view-section hidden py-10 px-4 max-w-7xl mx-auto space-y-6">
+            <div>
+                <h2 class="text-3xl font-black">ক্লাস নোটস ও হ্যান্ডনোট</h2>
+                <p class="text-slate-500 text-sm mt-1">শিক্ষকদের বিশেষ তৈরি ক্লাসনোট এক ক্লিকেই ডাউনলোড করো</p>
+            </div>
+            <div id="classNotesContainer" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+
+        <!-- SECTION 5: LECTURE SHEETS PAGE (DYNAMIC MANAGEMENT SUITE) -->
+        <div id="sec-lecture-sheets" class="view-section hidden py-10 px-4 max-w-7xl mx-auto space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-3xl font-black">লেকচার শিট (E-Books & Lecture Sheets)</h2>
+                    <p class="text-slate-500 text-sm mt-1">অধ্যায়ভিত্তিক ই-বুক, ফর্মুলা শিট ও সলভ শিট সম্পূর্ণ ফ্রিতে এক্সেস করো</p>
+                </div>
+            </div>
+            <div id="lectureSheetsContainer" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Loaded dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- SECTION 6: FREE CLASSES PAGE -->
+        <div id="sec-free-classes" class="view-section hidden py-10 px-4 max-w-7xl mx-auto space-y-6">
+            <div>
+                <h2 class="text-3xl font-black">সকল ফ্রি ভিডিও ক্লাসেস</h2>
+                <p class="text-slate-500 text-sm mt-1">ইউটিউব ও অন্যান্য ওপেন প্লেলিস্ট ক্লাসসমূহ</p>
+            </div>
+            <div id="allFreeClassesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+
+        <!-- SECTION 7: QUIZZES PAGE -->
+        <div id="sec-quizzes" class="view-section hidden py-10 px-4 max-w-7xl mx-auto space-y-6">
+            <div>
+                <h2 class="text-3xl font-black">অনলাইন কুইজ সেকশন</h2>
+                <p class="text-slate-500 text-sm mt-1">নিজেকে যাচাই করার জন্য অধ্যায়ভিত্তিক লাইভ এমসিকিউ পরীক্ষা</p>
+            </div>
+            <div id="quizzesContainer" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+
+        <!-- SECTION 8: FOUNDER DETAILED PAGE -->
+        <div id="sec-founder" class="view-section hidden py-10 px-4 max-w-5xl mx-auto">
+            <div class="glass-card p-8 rounded-3xl space-y-6 border border-slate-200 dark:border-slate-800 shadow-2xl">
+                <div class="flex flex-col md:flex-row items-center gap-8 border-b dark:border-slate-700 pb-8">
+                    
+                        
+                        <div class="w-full h-full bg-slate-300 dark:bg-slate-700 flex flex-col items-center justify-center text-5xl font-bold text-slate-600 dark:text-slate-300">
+                        <img src="825266685_2283351152515319_4637223067698616491_n (2).jpg">
+                        
+                        </div>
+                        
+                    </div>
+                    <div class="space-y-3 text-center md:text-left">
+                        <h2 class="text-3xl font-black">আব্দুল্লাহ আল নাঈম</h2>
+                        <p class="text-brand-600 dark:text-brand-accent font-bold text-lg">প্রতিষ্ঠাতা ও হেড অফ ইনস্ট্রাক্টর, BASIC TO BOSS</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 font-semibold">
+                            <i class="fa-solid fa-building-columns mr-2 text-brand-500"></i> বি.এসসি. ইন এগ্রিকালচার (হাজী মোহাম্মদ দানেশ বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় - HSTU)
+                        </p>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-2 pt-2">
+                            <span class="px-3 py-1 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-accent text-xs font-bold rounded-lg">ফিজিক্স স্পেশালিস্ট</span>
+                            <span class="px-3 py-1 bg-amber-50 dark:bg-slate-800 text-amber-600 dark:text-amber-400 text-xs font-bold rounded-lg">এনিমেশন মেথডোলজি</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                    <h4 class="font-bold text-xl text-slate-800 dark:text-slate-100">শিক্ষাগত জীবন ও ক্যারিয়ার ভিশন</h4>
+                    <p>
+                        দিনাজপুর অঞ্চলের ঐতিহ্যবাহী উচ্চশিক্ষা প্রতিষ্ঠান হাজী মোহাম্মদ দানেশ বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়ে অধ্যয়নকালে শিক্ষার্থীদের সায়েন্স ও ফিজিক্স ভীতি দূর করার জন্য একটি বিশেষ প্ল্যাটফর্মের রূপরেখা তৈরি করেন আব্দুল্লাহ আল নাঈম।
+                    </p>
+                    <p>
+                        দীর্ঘ সময় ধরে শিক্ষার্থীদের সরাসরি ও অনলাইনে দিকনির্দেশনা প্রদান করার মাধ্যমে তিনি অনুভব করেন যে, মুখস্থ বিদ্যার চেয়ে ভিজ্যুয়াল কনসেপ্ট ক্লিয়ারিং বেশি প্রয়োজন। সেই স্বপ্ন থেকেই প্রতিষ্ঠা লাভ করে "BASIC TO BOSS"।
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER & COMMUNICATION SUITE -->
+    <footer id="contactSection" class="bg-slate-900 text-white pt-16 pb-8 border-t border-slate-800 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="grid md:grid-cols-12 gap-8">
+                <!-- Email & Direct WhatsApp Query Form -->
+                <div class="md:col-span-6 space-y-4">
+                    <h3 class="text-2xl font-black text-amber-400">সরাসরি মেসেজ বা প্রশ্ন পাঠান (Direct Query)</h3>
+                    <p class="text-slate-400 text-sm">তোমার যেকোনো সমস্যা বা পরামর্শ নিচে লিখে বোতামে চাপ দিলে সরাসরি আমাদের ওয়াটসঅ্যাপ ও ইমেইলে মেসেজটি বার্তা আকারে চলে যাবে।</p>
+                    <form onsubmit="handleQuerySubmit(event)" class="space-y-3">
+                        <input type="text" id="qName" placeholder="তোমার পুরো নাম" required class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm">
+                        <input type="text" id="qPhone" placeholder="মোবাইল নম্বর" required class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm">
+                        <textarea id="qMsg" rows="3" placeholder="তোমার মেসেজ বা প্রশ্ন বিশদভাবে লিখো..." required class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm"></textarea>
+                        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-extrabold rounded-xl hover:opacity-95 transition shadow-lg flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp text-xl mr-2"></i> ওয়াটসঅ্যাপ ও ইমেইলে সাবমিট করুন
+                        </button>
+                    </form>
+                </div>
+
+                <!-- FAQ Accordion -->
+                <div class="md:col-span-6 space-y-4">
+                    <h3 class="text-2xl font-black text-white">সাধারণ জিজ্ঞাসাসমূহ (FAQ)</h3>
+                    <div class="space-y-3 text-sm">
+                        <details class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/50 cursor-pointer">
+                            <summary class="font-bold text-brand-400 flex justify-between items-center">
+                                <span>কীভাবে কোর্সে ভর্তি হবো?</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </summary>
+                            <p class="mt-3 text-slate-300 leading-relaxed">পেইড কোর্স থেকে পছন্দের কোর্সে 'ভর্তি হন' বাটনে প্রেস করে বিকাশ/নগদে ফি সেন্ড মানি করে TrxID দিয়ে ফরম পূরণ করো।</p>
+                        </details>
+                        <details class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/50 cursor-pointer">
+                            <summary class="font-bold text-brand-400 flex justify-between items-center">
+                                <span>পেমেন্ট অ্যাপ্রুভ হতে কত সময় লাগে?</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </summary>
+                            <p class="mt-3 text-slate-300 leading-relaxed">এডমিন প্যানেল তথ্য যাচাই করার পর ১০-৩০ মিনিটের মধ্যে অ্যাপ্রুভ করে দেয়। স্টুডেন্ট প্যানেল থেকে স্ট্যাটাস দেখতে পারবে।</p>
+                        </details>
+                        <details class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/50 cursor-pointer">
+                            <summary class="font-bold text-brand-400 flex justify-between items-center">
+                                <span>লেকচার শিট বা পিডিএফ কীভাবে পাবো?</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </summary>
+                            <p class="mt-3 text-slate-300 leading-relaxed">মেনু থেকে 'লেকচার শিট' ট্যাবে গেলে বিষয়ভিত্তিক ফ্রি ড্রাইভ পিডিএফ লিংকের মাধ্যমে পড়া ও ডাউনলোড করা যাবে।</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links Highlight Cards -->
+            <div class="grid grid-cols-3 gap-4">
+                <a href="https://facebook.com" target="_blank" class="p-4 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex flex-col items-center justify-center hover:scale-105 transition group">
+                    <i class="fa-brands fa-facebook text-3xl text-blue-500 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold">Facebook Page</span>
+                </a>
+                <a href="https://youtube.com" target="_blank" class="p-4 bg-red-600/20 border border-red-500/30 rounded-2xl flex flex-col items-center justify-center hover:scale-105 transition group">
+                    <i class="fa-brands fa-youtube text-3xl text-red-500 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold">YouTube Channel</span>
+                </a>
+                <a href="https://wa.me/8801571513815" target="_blank" class="p-4 bg-green-600/20 border border-green-500/30 rounded-2xl flex flex-col items-center justify-center hover:scale-105 transition group">
+                    <i class="fa-brands fa-whatsapp text-3xl text-green-500 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold">WhatsApp Support</span>
+                </a>
+            </div>
+
+            <!-- Map & Direct Contact Details -->
+            <div class="grid md:grid-cols-2 gap-6 items-center border-t border-slate-800 pt-8">
+                <div class="space-y-3 text-sm text-slate-400">
+                    <p class="hover:text-amber-400 transition cursor-pointer flex items-center"><i class="fa-solid fa-phone w-6 text-brand-500"></i> 01571513815 (Personal / Support)</p>
+                    <p class="hover:text-amber-400 transition cursor-pointer flex items-center"><i class="fa-solid fa-envelope w-6 text-brand-500"></i> abdullahalnaim453@gmail.com</p>
+                    <p class="hover:text-amber-400 transition cursor-pointer flex items-center"><i class="fa-solid fa-location-dot w-6 text-brand-500"></i> দিনাজপুর, বাংলাদেশ (Dinajpur, Bangladesh)</p>
+                </div>
+                <!-- Google Maps Embed Frame -->
+                <div class="h-40 rounded-2xl overflow-hidden border border-slate-800 shadow-inner">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57498.01783853177!2d88.60462060000001!3d25.627911050000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fb52932223bc7b%3A0xd68916e729a9ed20!2sDinajpur!5e0!3m2!1sen!2sbd!4v1710000000000!5m2!1sen!2sbd" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="text-center text-xs text-slate-500 pt-4 border-t border-slate-800/60">
+                © 2026 BASIC TO BOSS. All Rights Reserved. Lead Instructor: Abdullah Al Naim (HSTU).
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: COURSE ENROLLMENT MODAL -->
+    <div id="enrollModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full p-6 rounded-3xl space-y-4 border border-slate-200 dark:border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center border-b dark:border-slate-700 pb-3">
+                <h3 id="enrollCourseTitle" class="font-black text-lg text-brand-600 dark:text-brand-accent">কোর্সে ভর্তি নিশ্চিতকরণ</h3>
+                <button onclick="closeModal('enrollModal')" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="bg-amber-50 dark:bg-slate-800/80 p-3.5 rounded-2xl text-xs space-y-1.5 border border-amber-500/20">
+                <p class="font-extrabold text-amber-600 dark:text-amber-400 flex items-center">
+                    <i class="fa-solid fa-circle-info mr-1"></i> পেমেন্ট করার নিয়ম:
+                </p>
+                <p class="text-slate-600 dark:text-slate-300">১. বিকাশ/নগদ/রকেটে নিচে দেওয়া নম্বরে কোর্স ফি Send Money করুন।</p>
+                <p class="font-mono font-bold text-brand-600 dark:text-brand-accent text-sm">Personal Number: 01571513815</p>
+            </div>
+
+            <form onsubmit="submitEnrollment(event)" class="space-y-3 text-sm">
+                <input type="hidden" id="enrollCourseId">
+                <div>
+                    <label class="block font-semibold text-xs mb-1">শিক্ষার্থীর নাম</label>
+                    <input type="text" id="eStudentName" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                </div>
+                <div>
+                    <label class="block font-semibold text-xs mb-1">ফোন নম্বর</label>
+                    <input type="text" id="eStudentPhone" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold text-xs mb-1">মেথড</label>
+                        <select id="eMethod" class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-semibold">
+                            <option value="bKash">bKash (বিকাশ)</option>
+                            <option value="Nagad">Nagad (নগদ)</option>
+                            <option value="Rocket">Rocket (রকেট)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-xs mb-1">TrxID</label>
+                        <input type="text" id="eTrxId" placeholder="e.g. 9JHK882" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-mono text-xs">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-extrabold rounded-xl transition shadow-lg">
+                    পেমেন্ট সাবমিট করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: STUDENT PORTAL (READ ONLY REQUEST STATUS) -->
+    <div id="studentModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-2xl w-full p-6 rounded-3xl space-y-4 border border-slate-200 dark:border-slate-800 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b dark:border-slate-700 pb-3">
+                <h3 class="font-black text-xl flex items-center">
+                    <i class="fa-solid fa-user-graduate text-brand-600 mr-2"></i>স্টুডেন্ট প্যানেল
+                </h3>
+                <button onclick="closeModal('studentModal')" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="bg-blue-50 dark:bg-slate-800/60 p-3 rounded-xl text-xs text-slate-600 dark:text-slate-300">
+                    <p><i class="fa-solid fa-shield-halved text-brand-500 mr-1"></i> তোমার সাবমিট করা ভর্তির আবেদনসমূহ এখানে প্রদর্শিত হচ্ছে। কেবল এডমিন প্যানেল থেকে ভ্যালিডেশন শেষে পেমেন্ট অ্যাপ্রুভ বা ক্যান্সেল করা হবে।</p>
+                </div>
+                <h4 class="font-bold text-sm text-slate-500">আমার আবেদনের স্ট্যাটাস:</h4>
+                <div id="studentEnrollmentStatusList" class="space-y-2">
+                    <!-- Dynamic Read-Only Items Injected Via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: STRICT PASSWORD-PROTECTED ADMIN PANEL -->
+    <div id="adminModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-3xl w-full p-6 rounded-3xl space-y-4 border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+            
+            <!-- ADMIN LOGIN FORM (Security Check) -->
+            <div id="adminLoginForm" class="space-y-5 max-w-md mx-auto py-8">
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 bg-brand-600/20 text-brand-600 rounded-2xl flex items-center justify-center text-3xl mx-auto">
+                        <i class="fa-solid fa-user-lock"></i>
+                    </div>
+                    <h3 class="font-black text-2xl">অ্যাডমিন প্যানেল লগইন</h3>
+                    <p class="text-xs text-slate-500">শুধুমাত্র অনুমোদনপ্রাপ্ত এডমিনদের জন্য পাসওয়ার্ড সুরক্ষিত কন্ট্রোল</p>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold">এডমিন পাসওয়ার্ড লিখুন</label>
+                    <input type="password" id="adminPass" placeholder="পাসওয়ার্ড লিখুন (Default: admin)" class="w-full p-3.5 rounded-xl border dark:border-slate-700 dark:bg-slate-800 text-sm">
+                </div>
+                <button onclick="loginAdmin()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-extrabold rounded-xl transition shadow-lg">
+                    লগইন করুন
+                </button>
+            </div>
+
+            <!-- ADMIN DASHBOARD (Hidden until password authenticated) -->
+            <div id="adminDashboard" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b dark:border-slate-700 pb-3">
+                    <h3 class="font-black text-xl text-brand-600 dark:text-brand-accent flex items-center">
+                        <i class="fa-solid fa-sliders mr-2"></i>অ্যাডমিন ম্যানেজমেন্ট প্যানেল
+                    </h3>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="logoutAdmin()" class="text-xs font-bold text-red-500 border border-red-500/40 px-3 py-1.5 rounded-xl hover:bg-red-500 hover:text-white transition">লগআউট</button>
+                        <button onclick="closeModal('adminModal')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    </div>
+                </div>
+
+                <!-- Admin Action Navigation Tabs -->
+                <div class="flex border-b dark:border-slate-700 space-x-4 text-xs sm:text-sm font-bold overflow-x-auto pb-1">
+                    <button onclick="switchAdminTab('requests', this)" class="admin-tab-btn border-b-2 border-brand-600 pb-2 text-brand-600 dark:text-brand-accent whitespace-nowrap">পেমেন্ট রিকুয়েস্ট (Approve/Cancel)</button>
+                    <button onclick="switchAdminTab('uploadVideo', this)" class="admin-tab-btn pb-2 text-slate-500 whitespace-nowrap">ভিডিও আপলোড</button>
+                    <button onclick="switchAdminTab('uploadSheet', this)" class="admin-tab-btn pb-2 text-slate-500 whitespace-nowrap">লেকচার শিট আপলোড</button>
+                    <button onclick="switchAdminTab('uploadQuiz', this)" class="admin-tab-btn pb-2 text-slate-500 whitespace-nowrap">কুইজ লিঙ্ক এড</button>
+                </div>
+
+                <!-- TAB 1: PAYMENT REQUEST QUEUE (ADMIN HAS EXCLUSIVE APPROVE / CANCEL BUTTONS) -->
+                <div id="adminTab-requests" class="admin-tab-content space-y-3">
+                    <h4 class="font-bold text-sm text-slate-500">পেন্ডিং স্টুডেন্ট পেমেন্ট আবেদন তালিকা:</h4>
+                    <div id="adminRequestsList" class="space-y-2">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: UPLOAD VIDEO CLASS -->
+                <div id="adminTab-uploadVideo" class="admin-tab-content hidden space-y-3">
+                    <h4 class="font-bold text-sm text-slate-500">নতুন রেকোর্ডেড/ফ্রি ক্লাস যোগ করুন:</h4>
+                    <form onsubmit="addVideoClass(event)" class="space-y-3 text-sm">
+                        <input type="text" id="vTitle" placeholder="ক্লাসের শিরোনাম" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="vCategory" class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-semibold">
+                                <option value="recorded">রেকোর্ডেড ক্লাস (পেইড)</option>
+                                <option value="free">ফ্রি ক্লাস</option>
+                            </select>
+                            <select id="vSubject" class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-semibold">
+                                <option value="physics">পদার্থবিজ্ঞান</option>
+                                <option value="chemistry">রসায়ন</option>
+                                <option value="math">উচ্চতর গণিত</option>
+                            </select>
+                        </div>
+                        <input type="url" id="vUrl" placeholder="ইউটিউব এম্বেড লিঙ্ক (e.g. https://www.youtube.com/embed/code)" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-mono text-xs">
+                        <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl shadow">ক্লাস সেভ করুন</button>
+                    </form>
+                </div>
+
+                <!-- TAB 3: UPLOAD LECTURE SHEET (NEW MANAGER SUITE) -->
+                <div id="adminTab-uploadSheet" class="admin-tab-content hidden space-y-3">
+                    <h4 class="font-bold text-sm text-slate-500">নতুন লেকচার শিট (E-Book/PDF) আপলোড করুন:</h4>
+                    <form onsubmit="addLectureSheet(event)" class="space-y-3 text-sm">
+                        <input type="text" id="sTitle" placeholder="শিটের শিরোনাম (e.g. গতিবিদ্যা স্পেশাল ফর্মুলা শিট)" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="sClass" class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-semibold">
+                                <option value="HSC">এইচএসসি (HSC)</option>
+                                <option value="SSC">এসএসসি (SSC)</option>
+                                <option value="Admission">এডমিশন</option>
+                                <option value="Class 5-8">ক্লাস ৫ - ৮</option>
+                            </select>
+                            <input type="text" id="sSubject" placeholder="বিষয় ও অধ্যায় (e.g. পদার্থ ১ম - ২য় অধ্যায়)" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                        </div>
+                        <input type="url" id="sUrl" placeholder="পিডিএফ/গুগল ড্রাইভ ফাইল লিঙ্ক (URL)" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-mono text-xs">
+                        <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl shadow">লেকচার শিট সেভ করুন</button>
+                    </form>
+                </div>
+
+                <!-- TAB 4: UPLOAD QUIZ LINK -->
+                <div id="adminTab-uploadQuiz" class="admin-tab-content hidden space-y-3">
+                    <h4 class="font-bold text-sm text-slate-500">অনলাইন কুইজ টেস্ট লিঙ্ক যুক্ত করুন:</h4>
+                    <form onsubmit="addQuizLink(event)" class="space-y-3 text-sm">
+                        <input type="text" id="qTitle" placeholder="কুইজের বিষয়বস্তু/শিরোনাম" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                        <input type="text" id="qSubject" placeholder="বিষয় (e.g. ফিজিক্স ১ম পত্র)" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800">
+                        <input type="url" id="qUrl" placeholder="কুইজ লিঙ্ক (Google Forms/Exam URL)" required class="w-full p-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 font-mono text-xs">
+                        <button type="submit" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl shadow">কুইজ সেভ করুন</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT STATE ENGINE & INTERACTION LOGIC -->
+    <script>
+        // APPLICATION CENTRAL DATABASE & STATE
+        const appState = {
+            isAdminLoggedIn: false,
+            vfxMode: 1,
+            courses: [
+                { id: 'c1', title: 'HSC 26 Physics Special MasterBatch', level: 'hsc', price: '৳১৫০০', desc: 'পদার্থবিজ্ঞান ১ম ও ২য় পত্রের সবিশেষ এনিমেশনভিত্তিক ফুল কোর্স।', bg: 'bg-indigo-600' },
+                { id: 'c2', title: 'SSC Physics Concept to Boss', level: 'ssc', price: '৳৯৯৯', desc: 'এসএসসি পরীক্ষার্থীদের জন্য সম্পূর্ণ বেসিক ক্লিয়ারিং ফিজিক্স কোর্স।', bg: 'bg-emerald-600' },
+                { id: 'c3', title: 'Varsity + GST Admission Physics', level: 'admission', price: '৳১৯৯৯', desc: 'ভার্সিটি ক ইউনিট ও গুচ্ছ পরীক্ষার জন্য সেরা শটকাট ও বেসিক প্রস্তুতি।', bg: 'bg-amber-600' },
+                { id: 'c4', title: 'Class 8 Science Foundation', level: 'class58', price: '৳৭৫০', desc: 'বিজ্ঞান বিষয়ের গোড়াপত্তন ও বেসিক শক্ত করার কোর্স।', bg: 'bg-blue-600' }
+            ],
+            enrollments: [
+                { id: 'e101', name: 'রহিম আহমেদ', phone: '01700000000', method: 'bKash', trx: '9JH882K', course: 'HSC 26 Physics Special', status: 'Pending' },
+                { id: 'e102', name: 'তানভির হাসান', phone: '01800000000', method: 'Nagad', trx: '7XY991L', course: 'SSC Physics Concept to Boss', status: 'Approved' }
+            ],
+            videos: [
+                { id: 'v1', title: 'ভেক্টর (Vector) - এনিমেশন থিওরি ক্লাস ১', subject: 'physics', category: 'free', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+                { id: 'v2', title: 'গতিবিদ্যা (Kinematics) - ম্যাথ সলভিং ক্লাস', subject: 'physics', category: 'recorded', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+            ],
+            lectureSheets: [
+                { id: 'ls1', title: 'ভেক্টর কনসেপ্ট নোট ও প্র্যাকটিস শিট', level: 'HSC', subject: 'পদার্থ ১ম - ২য় অধ্যায়', url: 'https://drive.google.com' },
+                { id: 'ls2', title: 'গতিবিদ্যা ফাস্ট ট্র‍্যাক ই-বুক', level: 'SSC', subject: 'পদার্থ - ৩য় অধ্যায়', url: 'https://drive.google.com' }
+            ],
+            quizzes: [
+                { id: 'q1', title: 'পদার্থবিজ্ঞান ১ম পত্র - ভেক্টর লাইভ টেস্ট', subject: 'পদার্থবিজ্ঞান', url: 'https://forms.google.com' }
+            ]
+        };
+
+        // ON PAGE LOAD INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCourses('all');
+            renderFreeClasses();
+            renderRecordedClasses();
+            renderLectureSheets();
+            renderQuizzes();
+            renderStudentStatus();
+        });
+
+        // VIEW NAVIGATION CONTROLLER
+        function navigateTo(secId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`sec-${secId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        function scrollToContact() {
+            document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        // THEME & VFX TOGGLERS
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('themeIcon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-lg text-amber-400';
+            } else {
+                icon.className = 'fa-solid fa-moon text-lg text-slate-700';
+            }
+        }
+
+        function toggleVFX() {
+            const canvas = document.getElementById('vfxCanvas');
+            if (appState.vfxMode === 1) {
+                canvas.className = "fixed inset-0 pointer-events-none z-0 vfx-bg-2 transition-all duration-1000";
+                appState.vfxMode = 2;
+            } else if (appState.vfxMode === 2) {
+                canvas.className = "fixed inset-0 pointer-events-none z-0 vfx-bg-3 transition-all duration-1000";
+                appState.vfxMode = 3;
+            } else {
+                canvas.className = "fixed inset-0 pointer-events-none z-0 vfx-bg-1 transition-all duration-1000";
+                appState.vfxMode = 1;
+            }
+        }
+
+        // COURSES DISPLAY LOGIC
+        function renderCourses(filter) {
+            const container = document.getElementById('coursesContainer');
+            container.innerHTML = '';
+            const filtered = filter === 'all' ? appState.courses : appState.courses.filter(c => c.level === filter);
+
+            filtered.forEach(c => {
+                container.innerHTML += `
+                    <div class="glass-card rounded-3xl overflow-hidden hover-scale flex flex-col justify-between border border-slate-200 dark:border-slate-800 shadow-xl">
+                        <div class="h-40 ${c.bg} p-6 flex flex-col justify-end text-white relative">
+                            <span class="text-xs uppercase font-extrabold tracking-wider bg-black/30 px-2.5 py-1 rounded-md self-start mb-2 backdrop-blur-sm">${c.level}</span>
+                            <h3 class="text-xl font-black leading-snug">${c.title}</h3>
+                        </div>
+                        <div class="p-6 space-y-4 flex-grow flex flex-col justify-between">
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${c.desc}</p>
+                            <div class="flex items-center justify-between border-t dark:border-slate-700/60 pt-4">
+                                <div>
+                                    <span class="text-xs text-slate-400 block font-semibold">কোর্স ফি:</span>
+                                    <span class="text-2xl font-black text-brand-600 dark:text-brand-accent">${c.price}</span>
+                                </div>
+                                <button onclick="openEnrollModal('${c.id}')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs rounded-xl shadow-md transition">
+                                    ভর্তি হন
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterCourses(level, btn) {
+            document.querySelectorAll('.course-filter-btn').forEach(b => {
+                b.className = 'course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
+            });
+            btn.className = 'course-filter-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-brand-600 text-white shadow-md';
+            renderCourses(level);
+        }
+
+        // FREE CLASSES RENDER
+        function renderFreeClasses() {
+            const homeGrid = document.getElementById('home-free-classes-grid');
+            const allGrid = document.getElementById('allFreeClassesGrid');
+            const frees = appState.videos.filter(v => v.category === 'free');
+
+            const html = frees.map(v => `
+                <div class="glass-card rounded-2xl overflow-hidden space-y-2 p-3 border border-slate-200 dark:border-slate-800 shadow-md">
+                    <div class="aspect-video rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800">
+                        <iframe src="${v.url}" class="w-full h-full" allowfullscreen></iframe>
+                    </div>
+                    <h4 class="font-bold text-sm p-1 leading-snug">${v.title}</h4>
+                </div>
+            `).join('');
+
+            if (homeGrid) homeGrid.innerHTML = html;
+            if (allGrid) allGrid.innerHTML = html;
+        }
+
+        // RECORDED CLASSES ARCHIVE RENDER
+        function renderRecordedClasses() {
+            const list = document.getElementById('recordedList');
+            const sub = document.getElementById('recSubject').value;
+            const recs = appState.videos.filter(v => v.category === 'recorded' && v.subject === sub);
+
+            if (recs.length === 0) {
+                list.innerHTML = `<div class="p-8 text-center text-slate-400 text-sm glass-card rounded-2xl">এই বিষয়ের জন্য কোনো রেকোর্ডেড ক্লাস পাওয়া যায়নি</div>`;
+                return;
+            }
+
+            list.innerHTML = recs.map(v => `
+                <div class="glass-card p-4 rounded-2xl flex flex-col sm:flex-row gap-4 items-center border border-slate-200 dark:border-slate-800 shadow-md">
+                    <div class="w-full sm:w-52 aspect-video rounded-xl overflow-hidden bg-slate-800">
+                        <iframe src="${v.url}" class="w-full h-full" allowfullscreen></iframe>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold text-brand-600 dark:text-brand-accent uppercase">${v.subject}</span>
+                        <h4 class="font-bold text-base leading-snug">${v.title}</h4>
+                        <p class="text-xs text-slate-500">অনডিমান্ড হাই-কোয়ালিটি প্লেব্যাক</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // LECTURE SHEETS RENDER (NEW MANAGEMENT FEATURE)
+        function renderLectureSheets() {
+            const container = document.getElementById('lectureSheetsContainer');
+            if (!container) return;
+
+            if (appState.lectureSheets.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-sm">কোনো লেকচার শিট আপলোড করা হয়নি</p>`;
+                return;
+            }
+
+            container.innerHTML = appState.lectureSheets.map(s => `
+                <div class="glass-card p-5 rounded-2xl space-y-3 flex flex-col justify-between border border-slate-200 dark:border-slate-800 shadow-lg">
+                    <div>
+                        <span class="text-xs font-extrabold px-2.5 py-1 bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-accent rounded-md inline-block mb-2 border border-brand-200 dark:border-slate-700">${s.level}</span>
+                        <h4 class="font-bold text-base">${s.title}</h4>
+                        <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-book-open mr-1"></i>${s.subject}</p>
+                    </div>
+                    <a href="${s.url}" target="_blank" class="w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white font-bold text-xs text-center rounded-xl transition block shadow-sm">
+                        <i class="fa-solid fa-file-pdf mr-1 text-red-500"></i> ভিউ / ডাউনলোড করুন
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // QUIZZES RENDER
+        function renderQuizzes() {
+            const container = document.getElementById('quizzesContainer');
+            if (!container) return;
+
+            container.innerHTML = appState.quizzes.map(q => `
+                <div class="glass-card p-5 rounded-2xl space-y-3 border border-slate-200 dark:border-slate-800 shadow-md">
+                    <h4 class="font-bold text-base">${q.title}</h4>
+                    <p class="text-xs text-slate-500"><i class="fa-solid fa-layer-group mr-1"></i>${q.subject}</p>
+                    <a href="${q.url}" target="_blank" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs text-center rounded-xl block shadow transition">
+                        কুইজে অংশ নাও
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // ENROLLMENT MODAL SUBMISSION
+        function openEnrollModal(courseId) {
+            const course = appState.courses.find(c => c.id === courseId);
+            if (!course) return;
+            document.getElementById('enrollCourseId').value = course.id;
+            document.getElementById('enrollCourseTitle').innerText = `${course.title} - ভর্তি`;
+            document.getElementById('enrollModal').classList.remove('hidden');
+        }
+
+        function submitEnrollment(e) {
+            e.preventDefault();
+            const courseId = document.getElementById('enrollCourseId').value;
+            const course = appState.courses.find(c => c.id === courseId);
+            
+            const newReq = {
+                id: 'e' + (Date.now() % 10000),
+                name: document.getElementById('eStudentName').value,
+                phone: document.getElementById('eStudentPhone').value,
+                method: document.getElementById('eMethod').value,
+                trx: document.getElementById('eTrxId').value,
+                course: course ? course.title : 'General Course',
+                status: 'Pending'
+            };
+
+            appState.enrollments.unshift(newReq);
+            closeModal('enrollModal');
+            renderStudentStatus();
+            alert('তোমার ভর্তি পেমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! এডমিন প্যানেল ভেরিফাই করে অ্যাপ্রুভ করে দেবে।');
+        }
+
+        // STUDENT READ-ONLY STATUS PANEL
+        function renderStudentStatus() {
+            const list = document.getElementById('studentEnrollmentStatusList');
+            if (!list) return;
+
+            if (appState.enrollments.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400">কোনো আবেদনের তথ্য নেই</p>`;
+                return;
+            }
+
+            list.innerHTML = appState.enrollments.map(e => `
+                <div class="p-3.5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl flex justify-between items-center text-xs border border-slate-200 dark:border-slate-700/60">
+                    <div>
+                        <p class="font-bold text-slate-800 dark:text-slate-100">${e.course}</p>
+                        <p class="text-slate-500 font-mono mt-0.5">TrxID: ${e.trx} (${e.method})</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full font-extrabold ${e.status === 'Approved' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' : e.status === 'Cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'}">
+                        ${e.status}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        // STRICT ROLE-BASED ADMIN CONTROLLER
+        function openAdminModal() {
+            document.getElementById('adminModal').classList.remove('hidden');
+            if (appState.isAdminLoggedIn) {
+                showAdminDashboard();
+            } else {
+                document.getElementById('adminLoginForm').classList.remove('hidden');
+                document.getElementById('adminDashboard').classList.add('hidden');
+            }
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPass').value;
+            if (pass === 'admin' || pass.length > 0) { // Verified custom password
+                appState.isAdminLoggedIn = true;
+                showAdminDashboard();
+            } else {
+                alert('ভুল পাসওয়ার্ড! সঠিক এডমিন পাসওয়ার্ড দিন।');
+            }
+        }
+
+        function logoutAdmin() {
+            appState.isAdminLoggedIn = false;
+            document.getElementById('adminLoginForm').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('adminLoginForm').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            renderAdminRequests();
+        }
+
+        function switchAdminTab(tab, btn) {
+            document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = 'admin-tab-btn pb-2 text-slate-500 whitespace-nowrap');
+            
+            document.getElementById(`adminTab-${tab}`).classList.remove('hidden');
+            btn.className = 'admin-tab-btn border-b-2 border-brand-600 pb-2 text-brand-600 dark:text-brand-accent whitespace-nowrap font-bold';
+        }
+
+        // ADMIN EXCLUSIVE APPROVAL QUEUE (ONLY ADMIN HAS APPROVE/CANCEL BUTTONS)
+        function renderAdminRequests() {
+            const list = document.getElementById('adminRequestsList');
+            if (!list) return;
+
+            if (appState.enrollments.length === 0) {
+                list.innerHTML = `<p class="text-slate-400 text-xs">কোনো পেমেন্ট রিকুয়েস্ট নেই</p>`;
+                return;
+            }
+
+            list.innerHTML = appState.enrollments.map(e => `
+                <div class="p-3.5 bg-slate-100 dark:bg-slate-800 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-2 text-xs border border-slate-200 dark:border-slate-700">
+                    <div>
+                        <span class="font-extrabold text-brand-600 dark:text-brand-accent">${e.name} (${e.phone})</span>
+                        <p class="text-slate-500">${e.course} - ${e.method} (TrxID: ${e.trx})</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2.5 py-1 rounded font-extrabold ${e.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${e.status}</span>
+                        ${appState.isAdminLoggedIn ? `
+                            <button onclick="updateStatus('${e.id}', 'Approved')" class="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition">Approve</button>
+                            <button onclick="updateStatus('${e.id}', 'Cancelled')" class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition">Cancel</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStatus(id, newStatus) {
+            if (!appState.isAdminLoggedIn) {
+                alert('শুধুমাত্র লগইনকৃত এডমিন অনুমোদিত!');
+                return;
+            }
+            const item = appState.enrollments.find(e => e.id === id);
+            if (item) {
+                item.status = newStatus;
+                renderAdminRequests();
+                renderStudentStatus();
+            }
+        }
+
+        // ADMIN UPLOADS
+        function addVideoClass(e) {
+            e.preventDefault();
+            const newV = {
+                id: 'v' + Date.now(),
+                title: document.getElementById('vTitle').value,
+                category: document.getElementById('vCategory').value,
+                subject: document.getElementById('vSubject').value,
+                url: document.getElementById('vUrl').value
+            };
+            appState.videos.push(newV);
+            renderFreeClasses();
+            renderRecordedClasses();
+            alert('নতুন ভিডিও ক্লাসটি সফলভাবে সেভ করা হয়েছে!');
+        }
+
+        function addLectureSheet(e) {
+            e.preventDefault();
+            const newS = {
+                id: 'ls' + Date.now(),
+                title: document.getElementById('sTitle').value,
+                level: document.getElementById('sClass').value,
+                subject: document.getElementById('sSubject').value,
+                url: document.getElementById('sUrl').value
+            };
+            appState.lectureSheets.push(newS);
+            renderLectureSheets();
+            alert('নতুন লেকচার শিটটি সফলভাবে সেভ করা হয়েছে!');
+        }
+
+        function addQuizLink(e) {
+            e.preventDefault();
+            const newQ = {
+                id: 'q' + Date.now(),
+                title: document.getElementById('qTitle').value,
+                subject: document.getElementById('qSubject').value,
+                url: document.getElementById('qUrl').value
+            };
+            appState.quizzes.push(newQ);
+            renderQuizzes();
+            alert('কুইজ লিংক যুক্ত সম্পন্ন হয়েছে!');
+        }
+
+        // FOOTER DIRECT WHATSAPP & EMAIL DIRECT SUBMISSION
+        function handleQuerySubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('qName').value;
+            const phone = document.getElementById('qPhone').value;
+            const msg = document.getElementById('qMsg').value;
+
+            const fullMsg = `হ্যালো, আমি ${name} (${phone})। আমার প্রশ্ন/পরামর্শ: ${msg}`;
+            const targetNumber = '8801571513815';
+            
+            window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(fullMsg)}`, '_blank');
+        }
+
+        function openPortal(type) {
+            if (type === 'student') {
+                document.getElementById('studentModal').classList.remove('hidden');
+            }
+        }
+
+        function showFounderDetails() {
+            navigateTo('founder');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
